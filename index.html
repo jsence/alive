@@ -137,14 +137,18 @@
       border: none;
       cursor: pointer;
       position: relative;
+      display: grid;
+      place-items: center;
       width: 10rem;
       height: 10rem;
+      padding: 0;
       border-radius: 50%;
       color: var(--ember-core);
       font-family: inherit;
       font-size: 1.06rem;
       font-style: italic;
       letter-spacing: 0.06em;
+      text-align: center;
       /* Corps de laiton chaud, éclairé par le haut */
       background:
         radial-gradient(60% 55% at 50% 30%, rgba(255,240,220,0.55) 0%, rgba(255,175,95,0.22) 30%, transparent 60%),
@@ -167,11 +171,14 @@
 
     /* Le filament / la flamme au coeur */
     .btn .core {
-      display: block;
-      position: relative;
+      grid-area: 1 / 1;
       z-index: 2;
-      max-width: 7.2rem;
+      max-width: 7.6rem;
+      text-align: center;
       line-height: 1.35;
+      /* compense l'espace ajouté après la dernière lettre par letter-spacing,
+         pour un centrage optique parfait */
+      text-indent: 0.06em;
       transition: opacity 0.45s ease, font-size 0.45s ease, letter-spacing 0.45s ease;
     }
 
@@ -243,7 +250,7 @@
 
     /* Anneau de chargement */
     .spinner {
-      position: absolute;
+      grid-area: 1 / 1;
       z-index: 3;
       width: 2.6rem;
       height: 2.6rem;
@@ -330,7 +337,7 @@
         data-state="idle"
         aria-label="Envoyer le signal"
       >
-        <span class="core">envoyer</span>
+        <span class="core">faire signe</span>
         <span class="spinner" aria-hidden="true"></span>
       </button>
     </div>
