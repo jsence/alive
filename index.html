@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <meta name="theme-color" content="#0a0705" />
+  <meta name="theme-color" content="#050a07" />
   <meta name="color-scheme" content="dark" />
   <meta name="robots" content="noindex, nofollow" />
   <title>·</title>
@@ -18,17 +18,17 @@
        ———————————————————————————————————————————————— */
 
     :root {
-      --void: #0a0705;
-      --void-2: #0f0a07;
-      --ember: #ffb15e;
-      --ember-deep: #ff8a3d;
-      --ember-core: #fff1dc;
-      --ash: #a89584;
-      --ash-dim: #6b5d51;
+      --void: #050a07;
+      --void-2: #070f0a;
+      --ember: #8ff0b4;
+      --ember-deep: #63e39a;
+      --ember-core: #eafff2;
+      --ash: #8ea394;
+      --ash-dim: #566b5e;
       --ok: #9fd7a0;
       --err: #f0a0a0;
 
-      --glow: 255, 150, 70; /* rgb pour halos */
+      --glow: 130, 240, 165; /* rgb pour halos — vert clair */
     }
 
     * { box-sizing: border-box; }
@@ -41,7 +41,7 @@
 
     body {
       background:
-        radial-gradient(120% 90% at 50% 42%, #171008 0%, var(--void-2) 42%, var(--void) 78%, #050302 100%);
+        radial-gradient(120% 90% at 50% 42%, #0c1a10 0%, var(--void-2) 42%, var(--void) 78%, #020604 100%);
       color: var(--ash);
       font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
       -webkit-font-smoothing: antialiased;
@@ -151,12 +151,12 @@
       text-align: center;
       /* Corps de laiton chaud, éclairé par le haut */
       background:
-        radial-gradient(60% 55% at 50% 30%, rgba(255,240,220,0.55) 0%, rgba(255,175,95,0.22) 30%, transparent 60%),
-        radial-gradient(120% 120% at 50% 115%, #43230f 0%, #2a160a 55%, #1a0d06 100%);
+        radial-gradient(60% 55% at 50% 30%, rgba(228,255,238,0.55) 0%, rgba(140,235,175,0.22) 30%, transparent 60%),
+        radial-gradient(120% 120% at 50% 115%, #123d26 0%, #0d2a1a 55%, #071a10 100%);
       box-shadow:
-        inset 0 2px 3px rgba(255,235,210,0.45),
+        inset 0 2px 3px rgba(224,255,235,0.45),
         inset 0 -14px 26px rgba(0,0,0,0.6),
-        inset 0 0 0 1px rgba(255,170,100,0.22),
+        inset 0 0 0 1px rgba(140,235,175,0.22),
         0 0 22px rgba(var(--glow), 0.35),
         0 0 60px rgba(var(--glow), 0.28),
         0 18px 40px rgba(0,0,0,0.65);
@@ -192,9 +192,9 @@
       transform: translateY(-3px) scale(1.02);
       filter: brightness(1.08);
       box-shadow:
-        inset 0 2px 3px rgba(255,235,210,0.5),
+        inset 0 2px 3px rgba(224,255,235,0.5),
         inset 0 -14px 26px rgba(0,0,0,0.55),
-        inset 0 0 0 1px rgba(255,180,110,0.32),
+        inset 0 0 0 1px rgba(150,240,185,0.32),
         0 0 30px rgba(var(--glow), 0.5),
         0 0 90px rgba(var(--glow), 0.4),
         0 20px 46px rgba(0,0,0,0.7);
@@ -209,7 +209,7 @@
       box-shadow:
         inset 0 2px 4px rgba(0,0,0,0.5),
         inset 0 10px 24px rgba(0,0,0,0.65),
-        inset 0 0 0 1px rgba(255,170,100,0.28),
+        inset 0 0 0 1px rgba(140,235,175,0.28),
         0 0 26px rgba(var(--glow), 0.45),
         0 6px 16px rgba(0,0,0,0.6);
     }
@@ -217,8 +217,8 @@
     .btn:focus-visible {
       outline: none;
       box-shadow:
-        inset 0 2px 3px rgba(255,235,210,0.5),
-        0 0 0 2px rgba(255,190,120,0.55),
+        inset 0 2px 3px rgba(224,255,235,0.5),
+        0 0 0 2px rgba(150,240,185,0.6),
         0 0 34px rgba(var(--glow), 0.55),
         0 0 90px rgba(var(--glow), 0.4);
     }
@@ -237,9 +237,9 @@
     }
     .btn[data-state="sent"] {
       box-shadow:
-        inset 0 2px 3px rgba(255,240,220,0.6),
+        inset 0 2px 3px rgba(230,255,240,0.6),
         inset 0 -10px 24px rgba(0,0,0,0.4),
-        inset 0 0 0 1px rgba(255,205,150,0.4),
+        inset 0 0 0 1px rgba(175,245,200,0.4),
         0 0 40px rgba(var(--glow), 0.7),
         0 0 120px rgba(var(--glow), 0.5),
         0 18px 40px rgba(0,0,0,0.6);
@@ -255,7 +255,7 @@
       width: 2.6rem;
       height: 2.6rem;
       border-radius: 50%;
-      border: 2px solid rgba(255,220,190,0.18);
+      border: 2px solid rgba(200,240,215,0.18);
       border-top-color: var(--ember-core);
       opacity: 0;
       transition: opacity 0.3s ease;
