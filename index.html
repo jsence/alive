@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0a0705" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>·</title>
+
+  <!-- EmailJS SDK -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <style>
+    /* ————————————————————————————————————————————————
+       Identité : une lueur chaude dans le noir.
+       Une seule lumière qui respire, comme une lanterne.
+       ———————————————————————————————————————————————— */
+
+    :root {
+      --void: #0a0705;
+      --void-2: #0f0a07;
+      --ember: #ffb15e;
+      --ember-deep: #ff8a3d;
+      --ember-core: #fff1dc;
+      --ash: #a89584;
+      --ash-dim: #6b5d51;
+      --ok: #9fd7a0;
+      --err: #f0a0a0;
+
+      --glow: 255, 150, 70; /* rgb pour halos */
+    }
+
+    * { box-sizing: border-box; }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+      width: 100%;
+    }
+
+    body {
+      background:
+        radial-gradient(120% 90% at 50% 42%, #171008 0%, var(--void-2) 42%, var(--void) 78%, #050302 100%);
+      color: var(--ash);
+      font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      overflow: hidden;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: max(1.5rem, env(safe-area-inset-top)) 1.5rem max(1.5rem, env(safe-area-inset-bottom));
+      position: relative;
+    }
+
+    /* Grain léger : matière, pas un aplat numérique */
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.035;
+      mix-blend-mode: overlay;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      z-index: 5;
+    }
+
+    /* Vignette : le noir se referme sur les bords */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background: radial-gradient(130% 100% at 50% 45%, transparent 45%, rgba(0,0,0,0.55) 100%);
+      z-index: 4;
+    }
+
+    .stage {
+      position: relative;
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.75rem;
+      width: 100%;
+      max-width: 26rem;
+      text-align: center;
+    }
+
+    .whisper {
+      margin: 0;
+      font-size: 1.02rem;
+      font-style: italic;
+      letter-spacing: 0.02em;
+      line-height: 1.6;
+      color: var(--ash);
+      opacity: 0;
+      transform: translateY(6px);
+      animation: rise 2.4s ease 0.3s forwards;
+      text-wrap: balance;
+    }
+
+    /* ——— Le bouton : un objet physique, chaud ——— */
+    .lantern {
+      position: relative;
+      display: grid;
+      place-items: center;
+      width: 13.5rem;
+      height: 13.5rem;
+      isolation: isolate;
+    }
+
+    /* Halo qui respire derrière le bouton */
+    .lantern::before {
+      content: "";
+      position: absolute;
+      inset: -35%;
+      border-radius: 50%;
+      background: radial-gradient(circle at 50% 50%,
+        rgba(var(--glow), 0.42) 0%,
+        rgba(var(--glow), 0.18) 32%,
+        rgba(var(--glow), 0.05) 55%,
+        transparent 70%);
+      filter: blur(6px);
+      z-index: -1;
+      animation: breathe 5.5s ease-in-out infinite;
+      transition: opacity 0.6s ease;
+    }
+
+    .btn {
+      -webkit-tap-highlight-color: transparent;
+      appearance: none;
+      border: none;
+      cursor: pointer;
+      position: relative;
+      width: 10rem;
+      height: 10rem;
+      border-radius: 50%;
+      color: var(--ember-core);
+      font-family: inherit;
+      font-size: 1.06rem;
+      font-style: italic;
+      letter-spacing: 0.06em;
+      /* Corps de laiton chaud, éclairé par le haut */
+      background:
+        radial-gradient(60% 55% at 50% 30%, rgba(255,240,220,0.55) 0%, rgba(255,175,95,0.22) 30%, transparent 60%),
+        radial-gradient(120% 120% at 50% 115%, #43230f 0%, #2a160a 55%, #1a0d06 100%);
+      box-shadow:
+        inset 0 2px 3px rgba(255,235,210,0.45),
+        inset 0 -14px 26px rgba(0,0,0,0.6),
+        inset 0 0 0 1px rgba(255,170,100,0.22),
+        0 0 22px rgba(var(--glow), 0.35),
+        0 0 60px rgba(var(--glow), 0.28),
+        0 18px 40px rgba(0,0,0,0.65);
+      transition:
+        transform 0.28s cubic-bezier(.2,.8,.2,1),
+        box-shadow 0.4s ease,
+        filter 0.4s ease;
+      animation: pulse 5.5s ease-in-out infinite;
+      touch-action: manipulation;
+      will-change: transform;
+    }
+
+    /* Le filament / la flamme au coeur */
+    .btn .core {
+      display: block;
+      position: relative;
+      z-index: 2;
+      transition: opacity 0.3s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      filter: brightness(1.08);
+      box-shadow:
+        inset 0 2px 3px rgba(255,235,210,0.5),
+        inset 0 -14px 26px rgba(0,0,0,0.55),
+        inset 0 0 0 1px rgba(255,180,110,0.32),
+        0 0 30px rgba(var(--glow), 0.5),
+        0 0 90px rgba(var(--glow), 0.4),
+        0 20px 46px rgba(0,0,0,0.7);
+    }
+
+    .lantern:hover::before {
+      opacity: 1;
+      animation-duration: 3.2s;
+    }
+
+    .btn:active {
+      transform: translateY(2px) scale(0.975);
+      box-shadow:
+        inset 0 2px 4px rgba(0,0,0,0.5),
+        inset 0 10px 24px rgba(0,0,0,0.65),
+        inset 0 0 0 1px rgba(255,170,100,0.28),
+        0 0 26px rgba(var(--glow), 0.45),
+        0 6px 16px rgba(0,0,0,0.6);
+    }
+
+    .btn:focus-visible {
+      outline: none;
+      box-shadow:
+        inset 0 2px 3px rgba(255,235,210,0.5),
+        0 0 0 2px rgba(255,190,120,0.55),
+        0 0 34px rgba(var(--glow), 0.55),
+        0 0 90px rgba(var(--glow), 0.4);
+    }
+
+    /* États */
+    .btn[data-state="sending"] {
+      cursor: progress;
+      animation: none;
+    }
+    .btn[data-state="sending"] .core { opacity: 0; }
+
+    .btn[data-state="sent"] {
+      cursor: default;
+      animation: none;
+      color: var(--ember-core);
+    }
+    .btn[data-state="sent"] {
+      box-shadow:
+        inset 0 2px 3px rgba(255,240,220,0.6),
+        inset 0 -10px 24px rgba(0,0,0,0.4),
+        inset 0 0 0 1px rgba(255,205,150,0.4),
+        0 0 40px rgba(var(--glow), 0.7),
+        0 0 120px rgba(var(--glow), 0.5),
+        0 18px 40px rgba(0,0,0,0.6);
+      filter: brightness(1.15);
+    }
+
+    .btn:disabled { pointer-events: none; }
+
+    /* Anneau de chargement */
+    .spinner {
+      position: absolute;
+      z-index: 3;
+      width: 2.6rem;
+      height: 2.6rem;
+      border-radius: 50%;
+      border: 2px solid rgba(255,220,190,0.18);
+      border-top-color: var(--ember-core);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      animation: spin 0.9s linear infinite;
+    }
+    .btn[data-state="sending"] .spinner { opacity: 1; }
+
+    /* Coche de confirmation */
+    .check {
+      position: absolute;
+      z-index: 3;
+      width: 3rem;
+      height: 3rem;
+      opacity: 0;
+      transform: scale(0.6);
+      transition: opacity 0.4s ease, transform 0.5s cubic-bezier(.2,1.4,.4,1);
+    }
+    .btn[data-state="sent"] .check { opacity: 1; transform: scale(1); }
+    .check path {
+      fill: none;
+      stroke: var(--ember-core);
+      stroke-width: 3.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 40;
+      stroke-dashoffset: 40;
+    }
+    .btn[data-state="sent"] .check path {
+      animation: draw 0.6s ease 0.15s forwards;
+    }
+
+    /* Message d'état sous le bouton */
+    .status {
+      margin: 0;
+      min-height: 1.4em;
+      font-size: 0.95rem;
+      letter-spacing: 0.03em;
+      line-height: 1.5;
+      color: var(--ash-dim);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.5s ease, transform 0.5s ease, color 0.4s ease;
+      text-wrap: balance;
+    }
+    .status.show { opacity: 1; transform: translateY(0); }
+    .status.ok  { color: var(--ok); }
+    .status.err { color: var(--err); }
+
+    /* ——— Animations ——— */
+    @keyframes rise {
+      to { opacity: 0.85; transform: translateY(0); }
+    }
+    @keyframes breathe {
+      0%, 100% { transform: scale(0.94); opacity: 0.75; }
+      50%      { transform: scale(1.06); opacity: 1; }
+    }
+    @keyframes pulse {
+      0%, 100% { filter: brightness(0.96); }
+      50%      { filter: brightness(1.09); }
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes draw { to { stroke-dashoffset: 0; } }
+
+    @media (max-width: 380px) {
+      .lantern { width: 12rem; height: 12rem; }
+      .btn { width: 9rem; height: 9rem; font-size: 1rem; }
+    }
+
+    /* Respect de prefers-reduced-motion */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+      }
+      .whisper { opacity: 0.85; transform: none; }
+      .lantern::before { opacity: 0.85; }
+      .check path { stroke-dashoffset: 0; }
+      .spinner { animation: spin 0.9s linear infinite !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="stage">
+    <p class="whisper">Il est tard. Appuie, et je saurai.</p>
+
+    <div class="lantern">
+      <button
+        id="btn"
+        class="btn"
+        type="button"
+        data-state="idle"
+        aria-label="Envoyer le signal"
+      >
+        <span class="core">envoyer</span>
+        <span class="spinner" aria-hidden="true"></span>
+        <svg class="check" viewBox="0 0 40 40" aria-hidden="true">
+          <path d="M9 21 L17 29 L31 12" />
+        </svg>
+      </button>
+    </div>
+
+    <p id="status" class="status" role="status" aria-live="polite"></p>
+  </main>
+
+  <script>
+    // ————————————————————————————————————————————————
+    //  Identifiants EmailJS — à remplacer par les tiens.
+    // ————————————————————————————————————————————————
+    const EMAILJS_PUBLIC_KEY  = "COLLE_TA_CLE_ICI";
+    const EMAILJS_SERVICE_ID  = "COLLE_TON_SERVICE_ID_ICI";
+    const EMAILJS_TEMPLATE_ID = "COLLE_TON_TEMPLATE_ID_ICI";
+
+    // Variables passées au template (adapte-les à ton template si besoin).
+    const TEMPLATE_PARAMS = {
+      message: "Elle a appuyé sur le bouton.",
+      sent_at: new Date().toString()
+    };
+
+    const btn = document.getElementById("btn");
+    const statusEl = document.getElementById("status");
+
+    // Initialisation du SDK
+    let sdkReady = false;
+    try {
+      if (window.emailjs && typeof emailjs.init === "function") {
+        emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        sdkReady = true;
+      }
+    } catch (e) {
+      sdkReady = false;
+    }
+
+    function setStatus(text, kind) {
+      statusEl.textContent = text || "";
+      statusEl.classList.remove("ok", "err");
+      if (kind) statusEl.classList.add(kind);
+      statusEl.classList.toggle("show", Boolean(text));
+    }
+
+    function setState(state) {
+      btn.dataset.state = state;
+    }
+
+    let inFlight = false;
+
+    async function send() {
+      if (inFlight) return;
+
+      if (!sdkReady || !window.emailjs) {
+        setStatus("Impossible de charger l’envoi. Vérifie ta connexion.", "err");
+        return;
+      }
+
+      inFlight = true;
+      btn.disabled = true;
+      setState("sending");
+      setStatus("Envoi en cours…");
+
+      // On rafraîchit l'horodatage à chaque envoi.
+      const params = { ...TEMPLATE_PARAMS, sent_at: new Date().toString() };
+
+      try {
+        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params, {
+          publicKey: EMAILJS_PUBLIC_KEY
+        });
+        setState("sent");
+        setStatus("C’est parti. Il le sait maintenant.", "ok");
+        btn.setAttribute("aria-label", "Signal envoyé");
+        // Le bouton reste allumé, mission accomplie.
+      } catch (err) {
+        console.error("EmailJS error:", err);
+        setState("idle");
+        btn.disabled = false;
+        const detail = (err && (err.text || err.message)) ? " (" + (err.text || err.message) + ")" : "";
+        setStatus("Ça n’est pas parti. Réessaie." + detail, "err");
+      } finally {
+        inFlight = false;
+      }
+    }
+
+    btn.addEventListener("click", send);
+  </script>
+</body>
+</html>
