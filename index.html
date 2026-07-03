@@ -126,7 +126,8 @@
         transparent 70%);
       filter: blur(6px);
       z-index: -1;
-      animation: breathe 5.5s ease-in-out infinite;
+      transform: scale(0.97);
+      animation: heartbeat 2.6s cubic-bezier(.4,0,.5,1) infinite;
       transition: opacity 0.6s ease;
     }
 
@@ -159,7 +160,7 @@
         transform 0.28s cubic-bezier(.2,.8,.2,1),
         box-shadow 0.4s ease,
         filter 0.4s ease;
-      animation: pulse 5.5s ease-in-out infinite;
+      animation: heartbeat-glow 2.6s cubic-bezier(.4,0,.5,1) infinite;
       touch-action: manipulation;
       will-change: transform;
     }
@@ -169,7 +170,15 @@
       display: block;
       position: relative;
       z-index: 2;
-      transition: opacity 0.3s ease;
+      max-width: 7.2rem;
+      line-height: 1.35;
+      transition: opacity 0.45s ease, font-size 0.45s ease, letter-spacing 0.45s ease;
+    }
+
+    /* Texte de confirmation, plus long : on réduit et on centre */
+    .btn[data-state="sent"] .core {
+      font-size: 0.92rem;
+      letter-spacing: 0.03em;
     }
 
     .btn:hover {
@@ -185,8 +194,7 @@
     }
 
     .lantern:hover::before {
-      opacity: 1;
-      animation-duration: 3.2s;
+      animation-duration: 2s;
     }
 
     .btn:active {
@@ -248,30 +256,6 @@
     }
     .btn[data-state="sending"] .spinner { opacity: 1; }
 
-    /* Coche de confirmation */
-    .check {
-      position: absolute;
-      z-index: 3;
-      width: 3rem;
-      height: 3rem;
-      opacity: 0;
-      transform: scale(0.6);
-      transition: opacity 0.4s ease, transform 0.5s cubic-bezier(.2,1.4,.4,1);
-    }
-    .btn[data-state="sent"] .check { opacity: 1; transform: scale(1); }
-    .check path {
-      fill: none;
-      stroke: var(--ember-core);
-      stroke-width: 3.2;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-      stroke-dasharray: 40;
-      stroke-dashoffset: 40;
-    }
-    .btn[data-state="sent"] .check path {
-      animation: draw 0.6s ease 0.15s forwards;
-    }
-
     /* Message d'état sous le bouton */
     .status {
       margin: 0;
@@ -293,16 +277,25 @@
     @keyframes rise {
       to { opacity: 0.85; transform: translateY(0); }
     }
-    @keyframes breathe {
-      0%, 100% { transform: scale(0.94); opacity: 0.75; }
-      50%      { transform: scale(1.06); opacity: 1; }
+    /* Battement de coeur : lub (fort) puis dub (léger), puis repos.
+       Amplitude volontairement discrète — une présence, pas un flash. */
+    @keyframes heartbeat {
+      0%   { transform: scale(0.97); opacity: 0.74; }
+      9%   { transform: scale(1.06); opacity: 1;    } /* lub */
+      18%  { transform: scale(0.985); opacity: 0.82; }
+      27%  { transform: scale(1.035); opacity: 0.93; } /* dub */
+      38%  { transform: scale(0.97); opacity: 0.74; }
+      100% { transform: scale(0.97); opacity: 0.74; } /* repos */
     }
-    @keyframes pulse {
-      0%, 100% { filter: brightness(0.96); }
-      50%      { filter: brightness(1.09); }
+    @keyframes heartbeat-glow {
+      0%   { filter: brightness(0.97); }
+      9%   { filter: brightness(1.1);  } /* lub */
+      18%  { filter: brightness(1.0);  }
+      27%  { filter: brightness(1.05); } /* dub */
+      38%  { filter: brightness(0.97); }
+      100% { filter: brightness(0.97); } /* repos */
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes draw { to { stroke-dashoffset: 0; } }
 
     @media (max-width: 380px) {
       .lantern { width: 12rem; height: 12rem; }
@@ -319,15 +312,15 @@
         transition-duration: 0.001ms !important;
       }
       .whisper { opacity: 0.85; transform: none; }
-      .lantern::before { opacity: 0.85; }
-      .check path { stroke-dashoffset: 0; }
+      /* Halo statique, doux, sans battement */
+      .lantern::before { opacity: 0.85; transform: scale(1); }
       .spinner { animation: spin 0.9s linear infinite !important; }
     }
   </style>
 </head>
 <body>
   <main class="stage">
-    <p class="whisper">Il est tard. Appuie, et je saurai.</p>
+    <p class="whisper">Tout va bien, Eyleen. Tu es une femme forte. Je suis avec toi.</p>
 
     <div class="lantern">
       <button
@@ -339,9 +332,6 @@
       >
         <span class="core">envoyer</span>
         <span class="spinner" aria-hidden="true"></span>
-        <svg class="check" viewBox="0 0 40 40" aria-hidden="true">
-          <path d="M9 21 L17 29 L31 12" />
-        </svg>
       </button>
     </div>
 
@@ -364,6 +354,7 @@
 
     const btn = document.getElementById("btn");
     const statusEl = document.getElementById("status");
+    const coreEl = btn.querySelector(".core");
 
     // Initialisation du SDK
     let sdkReady = false;
@@ -409,9 +400,10 @@
         await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, params, {
           publicKey: EMAILJS_PUBLIC_KEY
         });
+        coreEl.textContent = "notification envoyée";
         setState("sent");
-        setStatus("C’est parti. Il le sait maintenant.", "ok");
-        btn.setAttribute("aria-label", "Signal envoyé");
+        setStatus("Merci de m’avoir prévenue.", "ok");
+        btn.setAttribute("aria-label", "Notification envoyée");
         // Le bouton reste allumé, mission accomplie.
       } catch (err) {
         console.error("EmailJS error:", err);
